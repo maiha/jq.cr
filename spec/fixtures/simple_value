@@ -1,0 +1,39 @@
+#
+# Simple value tests to check parser. Input is irrelevant
+#
+
+true
+null
+true
+
+false
+null
+false
+
+null
+42
+null
+
+1
+null
+1
+
+
+-1
+null
+-1
+
+# FIXME: much more number testing needed
+
+{}
+null
+{}
+
+[]
+null
+[]
+
+#{x: -1}
+#null
+#{"x": -1}
+

@@ -5,7 +5,7 @@ require "../src/jq"
 
 module MappingSpec
   JSON_STRING = <<-EOF
-{
+   {
    "title":"Example Schema",
    "type":"object",
    "properties":{
@@ -25,7 +25,7 @@ module MappingSpec
       "firstName",
       "lastName"
    ]
-}
+   }
    EOF
 
   class ValidSchema

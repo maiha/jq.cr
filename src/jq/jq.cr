@@ -6,7 +6,7 @@ class Jq
   delegate raw, "any"
   delegate parse, "self.class"
 
-  def initialize(@any : JSON::Any, @trace = "" : String)
+  def initialize(@any : JSON::Any, @trace : String = "")
   end
 
   def initialize(str : String)

@@ -1,7 +1,7 @@
 require "json"
 
 class Jq
-  record Query, trace, f do
+  record Query, trace : String, f : (JSON::Any -> JSON::Any) do
     def apply(any : JSON::Any) : JSON::Any
       proc = Proc(JSON::Any, JSON::Any).new(f.pointer, f.closure_data)
       proc.call(any)
@@ -11,8 +11,8 @@ class Jq
       Query.new(trace, ->(x : JSON::Any) { x[key] })
     end
 
-    def self.const(trace : String, json : JSON::Type) : Query
-      Query.new(trace, ->(x : JSON::Any) { json })
+    def self.const(trace : String, val : JSON::Type) : Query
+      Query.new(trace, ->(x : JSON::Any) { JSON::Any.new(val) })
     end
   end
 end

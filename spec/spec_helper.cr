@@ -1,8 +1,8 @@
 require "spec"
 require "../src/jq"
 
-record Line, no, buffer
-record Suit, program_line, input_line, output_line do
+record Line, no : Int32, buffer : String
+record Suit, program_line : Line, input_line : Line, output_line : Line do
   def program : String
     program_line.buffer
   end

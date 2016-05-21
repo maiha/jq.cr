@@ -18,7 +18,7 @@ class Jq
       q = Jq.new(%any)
 
       {% for key, tuple in properties %}
-        @{{key.id}} :: {{tuple[0]}}
+        @{{key.id}} = uninitialized {{tuple[0]}}
         case (v = q[{{tuple[1]}}].raw)
         when {{tuple[0]}}
           @{{key.id}} = v

@@ -14,7 +14,7 @@ class Jq
   end
 
   def [](filter : String) : Jq
-    parse(filter).inject(self) { |jq, query| jq[query] }
+    parse(filter).reduce(self) { |jq, query| jq[query] }
   end
 
   def [](query : Query) : Jq

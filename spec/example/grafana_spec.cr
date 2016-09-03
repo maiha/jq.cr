@@ -1,0 +1,31 @@
+require "./spec_helper"
+
+module Example::Grafana
+  QUERY = <<-EOF
+  {
+    "panelId":1,
+    "range":{"from":"2016-09-02T13:32:09.981Z","to":"2016-09-02T14:17:34.306Z"},
+    "rangeRaw":{"from":"2016-09-02T13:32:09.981Z","to":"2016-09-02T14:17:34.306Z"},
+    "interval":"2s",
+    "targets":[{"target":"cpu","refId":"A"}],
+    "format":"json",
+    "maxDataPoints":1299
+  }
+  EOF
+
+  class Request
+    Jq.mapping({
+      from: {Time, ".range.from", "%FT%T.%LZ"},
+    })
+  end
+  
+  it "should parse time of '/query' request by functional way" do
+    jq = Jq.new(QUERY)
+    jq[".range.from"].as_s.should eq("2016-09-02T13:32:09.981Z")
+  end
+
+  it "should parse time of '/query' request by class with mapping" do
+    req = Request.from_json(QUERY)
+    req.from.should eq(Time.new(2016,9,2,13,32,9,981))
+  end
+end

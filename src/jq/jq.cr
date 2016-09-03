@@ -22,4 +22,10 @@ class Jq
   rescue err
     raise ParseException.new("`#{trace + query.trace}' #{err}")
   end
+
+  {% for name in %w( nil bool bool? i i? i64 i64? f f? f32 f32? s s? a a? h h? ) %}
+    def as_{{name.id}}
+      @any.as_{{name.id}}
+    end
+  {% end %}
 end

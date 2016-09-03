@@ -81,7 +81,7 @@ module MappingSpec
     end
 
     it "uses '.key' for the path when path is missing" do
-      s = TypeOnly.from_json(JSON_STRING)    
+      s = TypeOnly.from_json(JSON_STRING)
       s.title.should eq("Example Schema")
     end
   end

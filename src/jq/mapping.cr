@@ -2,17 +2,19 @@ class Jq
   macro mapping(properties)
     # First, normalize property structure for following formats.
     # (before)
-    #   key:  String,
-    #   name: {String, ".name"},
+    #   key1:  String,
+    #   key2: {String, ".key2"},
+    #   key3: {Time, ".key3", "%FT%T"},
     # (after)
-    #   key:  {String, ".key"},
-    #   name: {String, ".name"},
+    #   key1: {String, ".key1"},
+    #   key2: {String, ".key2"},
+    #   key3: {Time, ".key3", "%FT%T"},
     {% for key, tuple in properties %}
       {% properties[key] = {tuple, ".#{key.id}"} if tuple.is_a?(Path) %}
     {% end %}
 
     def self.from_json(string : String)
-      new(JSON.parse(string))
+      new(::JSON.parse(string))
     end
 
     {% for key, tuple in properties %}
@@ -25,7 +27,7 @@ class Jq
       end
     {% end %}
 
-    def initialize(%any : JSON::Any)
+    def initialize(%any : ::JSON::Any)
       q = Jq.new(%any)
 
       {% for key, tuple in properties %}
@@ -34,7 +36,12 @@ class Jq
         when {{tuple[0]}}
           @{{key.id}} = v
         else
-          raise Jq::ParseException.new("`#{{{tuple[1]}}}' expected #{{{tuple[0]}}}, but got #{v.class}")
+          hint = {{tuple[1]}}
+          if {{tuple[0]}} == ::Time && v.is_a?(String)
+            @{{key.id}} = jq_parse_as_time(hint, v, {{tuple[2]}})
+          else
+            raise Jq::ParseException.new("`#{hint}' expected #{{{tuple[0]}}}, but got #{v.class}")
+          end
         end
       {% end %}
     end
@@ -48,6 +55,12 @@ class Jq
           end
         {% end %}
       end
+    end
+
+    protected def jq_parse_as_time(hint, v, fmt : String? = "%F")
+      Time.parse(v, fmt.not_nil!)
+    rescue err
+      raise Jq::ParseException.new("`#{hint}' #{err} (input: #{v})")
     end
   end
 end

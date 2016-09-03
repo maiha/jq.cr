@@ -1,5 +1,4 @@
 require "./spec_helper"
-require "../src/jq"
 
 module MappingSpec
   JSON_STRING = <<-EOF
@@ -51,6 +50,12 @@ module MappingSpec
       age: {Int64, ".properties.age"},
     })
   end
+
+  class TypeOnly
+    Jq.mapping({
+      title: String,
+    })
+  end
 end
 
 describe "Jq.mapping" do
@@ -75,6 +80,10 @@ describe "Jq.mapping" do
       expect_raises Jq::ParseException, "`.properties.age' expected Int64, but got Hash" do
         MappingSpec::NotLeaf.from_json(MappingSpec::JSON_STRING)
       end
+    end
+
+    it "uses '.key' for the path when path is missing" do
+      MappingSpec::TypeOnly.from_json(MappingSpec::JSON_STRING)
     end
   end
 

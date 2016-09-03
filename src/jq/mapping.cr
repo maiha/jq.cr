@@ -1,5 +1,16 @@
 class Jq
   macro mapping(properties)
+    # First, normalize property structure for following formats.
+    # (before)
+    #   key:  String,
+    #   name: {String, ".name"},
+    # (after)
+    #   key:  {String, ".key"},
+    #   name: {String, ".name"},
+    {% for key, tuple in properties %}
+      {% properties[key] = {tuple, ".#{key.id}"} if tuple.is_a?(Path) %}
+    {% end %}
+
     def self.from_json(string : String)
       new(JSON.parse(string))
     end

@@ -40,7 +40,7 @@ class Jq
           if {{tuple[0]}} == ::Time && v.is_a?(String)
             @{{key.id}} = jq_parse_as_time(hint, v, {{tuple[2]}})
           else
-            raise Jq::ParseException.new("`#{hint}' expected #{{{tuple[0]}}}, but got #{v.class}")
+            raise Jq::ParseException.new("mapping: `#{hint}' expected #{{{tuple[0]}}}, but got #{v.class}")
           end
         end
       {% end %}

@@ -8,23 +8,26 @@ class Jq
     loop do
       case s.strip
       when /\A\.(\w+)(.*)\Z/ # ".foo"
-        array << Query.attr(".#{$1}", $1)
+        array << Query::Attr.new(".#{$1}", $1)
         s = $2
       when /\A\."(\w+)"(.*)\Z/ # ".foo"
-        array << Query.attr(".#{$1}", $1)
+        array << Query::Attr.new(".#{$1}", $1)
         s = $2
+      when /\A\[\](.*)\Z/ # "[]"
+        array << Query::ToArray.new("[]")
+        s = $1
       when /\A\[(\d+?)\](.*)\Z/ # "[0]"
-        array << Query.attr("[#{$1}]", $1.to_i)
+        array << Query::Attr.new("[#{$1}]", $1.to_i)
         s = $2
       when /\A\.\["(\w+?)"\](.*)\Z/ # ".[foo]"
-        array << Query.attr("[#{$1}]", $1)
+        array << Query::Attr.new("[#{$1}]", $1)
         s = $2
       when ""
         break
       when /(.*)/
         s = $1
         begin
-          array << Query.const(s, JSON.parse(s).raw)
+          array << Query::Const.new(s, JSON.parse(s).raw)
           break
         rescue
           trace = array.map(&.trace).join

@@ -34,7 +34,7 @@ describe Jq do
       str = %({"name": "Hi", "any": [{"x": 1}, 2, "hey", true, false, 1.5, null]})
       q = Jq.new(str)
 
-      expect_raises Jq::ParseException, "`.any.x' expected Hash for #[](key : String), not Array(JSON::Type)" do
+      expect_raises Jq::ParseException do
         q[".any.x"]
       end
     end

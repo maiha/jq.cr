@@ -1,8 +1,6 @@
 require "./spec_helper"
 require "../src/jq"
 
-# test data is derived from: `jq-1.4/tests/all.test`
-
 describe Jq do
   describe "any" do
     it "returns JSON::Any" do

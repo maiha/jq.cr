@@ -1,8 +1,6 @@
 require "./spec_helper"
 require "../src/jq"
 
-# test data is derived from: `jq-1.4/tests/all.test`
-
 describe Jq do
   describe "[]" do
     it "parses JSON::Any by given filter string" do

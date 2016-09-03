@@ -1,8 +1,6 @@
 require "./spec_helper"
 require "../src/jq"
 
-# test data is derived from: `http://json-schema.org/examples.html`
-
 module MappingSpec
   JSON_STRING = <<-EOF
    {

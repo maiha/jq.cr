@@ -15,7 +15,7 @@ module Mapping::TimeFormatSpec
   end
 
   it "raises when unexpected data has come" do
-    expect_raises Jq::ParseException do
+    expect_raises Jq::ParseError do
       Request.from_json(UNEXPECTED).from
     end
   end

@@ -65,17 +65,17 @@ module MappingSpec
     end
 
     it "raises when path node is not found" do
-      expect_raises Jq::ParseException, "`.properties.foo' Missing hash key:" do
+      expect_raises Jq::ParseError, "`.properties.foo' Missing hash key:" do
         PathNodeNotFound.from_json(JSON_STRING)
       end
     end
 
     it "raises when attr's class is not match" do
-      expect_raises Jq::ParseException, "`.title' expected Int64, but got String" do
+      expect_raises Jq::ParseError, "`.title' expected Int64, but got String" do
         ClassMismatch.from_json(JSON_STRING)
       end
 
-      expect_raises Jq::ParseException, "`.properties.age' expected Int64, but got Hash" do
+      expect_raises Jq::ParseError, "`.properties.age' expected Int64, but got Hash" do
         NotLeaf.from_json(JSON_STRING)
       end
     end

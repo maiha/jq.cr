@@ -20,7 +20,7 @@ class Jq
   def [](query : Query) : Jq
     Jq.new(query.apply(any), trace + query.trace)
   rescue err
-    raise ParseException.new("`#{trace + query.trace}' #{err}")
+    raise ParseError.new("`#{trace + query.trace}' #{err}")
   end
 
   {% for name in %w( nil bool bool? i i? i64 i64? f f? f32 f32? s s? a a? h h? ) %}

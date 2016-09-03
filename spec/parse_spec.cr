@@ -13,19 +13,19 @@ describe Jq do
       q[".any"]["[1]"].raw.should eq(2)
     end
 
-    it "raises ParseException when broken filter string is given" do
+    it "raises ParseError when broken filter string is given" do
       str = %({"name": "Hi", "any": [{"x": 1}, 2, "hey", true, false, 1.5, null]})
       q = Jq.new(str)
 
-      expect_raises(Jq::ParseException) { q["[name["] }
-      expect_raises(Jq::ParseException) { q[".."] }
+      expect_raises(Jq::ParseError) { q["[name["] }
+      expect_raises(Jq::ParseError) { q[".."] }
     end
 
     it "raises when given filter key doesn't exist" do
       str = %({"name": "Hi", "any": [{"x": 1}, 2, "hey", true, false, 1.5, null]})
       q = Jq.new(str)
 
-      expect_raises Jq::ParseException, "`.foo' Missing hash key: " do
+      expect_raises Jq::ParseError, "`.foo' Missing hash key: " do
         q[".foo"]
       end
     end
@@ -34,7 +34,7 @@ describe Jq do
       str = %({"name": "Hi", "any": [{"x": 1}, 2, "hey", true, false, 1.5, null]})
       q = Jq.new(str)
 
-      expect_raises Jq::ParseException do
+      expect_raises Jq::ParseError do
         q[".any.x"]
       end
     end

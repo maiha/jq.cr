@@ -3,8 +3,64 @@
 thin JSON::Any wrapper to emulate jq for crystal
 [![Build Status](https://travis-ci.org/maiha/jq.cr.svg?branch=master)](https://travis-ci.org/maiha/jq.cr)
 
-## Installation
+## Usage
 
+- For example, here is a Grafana request data.
+
+```json
+{
+  "panelId":1,
+  "range":{"from":"2016-09-02T13:32:09.981Z","to":"2016-09-02T14:17:34.306Z"},
+  "rangeRaw":{"from":"2016-09-02T13:32:09.981Z","to":"2016-09-02T14:17:34.306Z"},
+  "interval":"2s",
+  "targets":[{"target":"cpu","refId":"A"},{"target":"mem","refId":"B"}],
+  "format":"json",
+  "maxDataPoints":1299
+}
+```
+
+#### Parse in Functional way
+
+- Just call 'Jq#[]` with query path.
+
+```crystal
+require "jq"
+
+jq = Jq.new(str)
+jq[".range.from"].as_s       # => "2016-09-02T13:32:09.981Z"
+jq[".targets[].target"].as_a # => ["cpu","mem"]
+jq[".format"].as_s           # => "json"
+jq[".maxDataPoints"].as_i    # => 1299
+jq[".xxx"]                   # Jq::ParseError("`.xxx' Missing hash key: "xxx")
+```
+
+- See `spec/fixtures/*` files for further usage, or try `crystal spec -v` for full features
+
+#### Auto parsing and casting by `mapping`
+
+- looks like `JSON.mapping` except this requires Tuple(type, json_path, (time_format)) for its arg.
+- NOTE: use `Int64` rather than `Int32` for Integer
+
+```crystal
+require "jq"
+
+class Request
+  Jq.mapping({
+    from:    {Time, ".range.from", "%FT%T.%LZ"},
+    targets: {Array(String), ".targets[].target"},
+    format:  String,
+    max:     {Int64, ".maxDataPoints"},
+  })
+end
+
+req = Request.from_json(str)
+req.from     # => Time.new(2016,9,2,13,32,9,981)
+req.targets  # => ["cpu","mem"]
+req.format   # => "json"
+req.max      # => 1299
+```
+
+## Installation
 
 Add this to your application's `shard.yml`:
 
@@ -12,54 +68,6 @@ Add this to your application's `shard.yml`:
 dependencies:
   jq:
     github: maiha/jq.cr
-```
-
-And then, run `crystal deps`
-
-
-## Usage
-
-#### query
-
-```crystal
-require "jq"
-
-str = %({"name": "Hi", "any": [{"x": 1}, 2, "hey", true, false, 1.5, null]})
-q = Jq.new(str)
-q[".name"].raw        # => "Hi"
-q[".any[1]"].raw      # => 2
-q[".any"]             # => #<Jq:0x10bb090 @any=[{"x" => 1}, 2, "hey", true, false, 1.5, nil], @trace=".any">
-q[".any[1]"]          # => #<Jq:0xf76c00 @any=2, @trace=".any[1]">
-q[".any"]["[1]"]      # => #<Jq:0xcd3ba0 @any=2, @trace=".any[1]">
-q[".any"]["[1]"].raw  # => 2
-q[".any[0].x"].raw    # => 1
-q[".foo"]             # raises 'Missing hash key: "foo"' (TODO: this should return null???)
-```
-
-- see `spec/fixtures/*` files, or try `crystal spec -v` for full features
-
-#### mapping
-
-- provides attributes as same as `JSON.mapping` except this requires JSON path
-- ATTR SYNTAX: key=ATTR_NAME, val=Tuple(type: Class, path: String)
-- NOTE: use `Int64` rather than `Int32` for Integer
-
-```crystal
-require "jq"
-
-class Foo
-  Jq.mapping({
-    name:  {String, ".name"},
-    count: {Int64, ".any[1]"},
-    x:     {Int64, ".any[0].x"},
-  })
-end
-
-str = %({"name": "Hi", "any": [{"x": 1}, 2, "hey", true, false, 1.5, null]})
-foo = Foo.from_json(str)
-foo.name   # => "Hi"
-foo.count  # => 2
-foo.x      # => 1
 ```
 
 ## Development

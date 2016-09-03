@@ -10,7 +10,7 @@ describe Jq do
         it test_name do
           begin
             Jq.new(suit.input)[suit.program].raw.should eq(suit.expected)
-          rescue err : Jq::ParseException
+          rescue err : Jq::ParseError
             # pretty error reporting
             err.to_s.should eq(suit.expected)
           end

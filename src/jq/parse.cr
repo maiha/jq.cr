@@ -1,5 +1,5 @@
 class Jq
-  class ParseException < Exception
+  class ParseError < Exception
   end
 
   def self.parse(source : String) : Array(Query)
@@ -31,7 +31,7 @@ class Jq
           break
         rescue
           trace = array.map(&.trace).join
-          raise ParseException.new("parse error: after '#{trace}' from '#{source}'")
+          raise ParseError.new("parse error: after '#{trace}' from '#{source}'")
         end
       end
     end

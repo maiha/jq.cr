@@ -7,7 +7,7 @@ module Example::Grafana
     "range":{"from":"2016-09-02T13:32:09.981Z","to":"2016-09-02T14:17:34.306Z"},
     "rangeRaw":{"from":"2016-09-02T13:32:09.981Z","to":"2016-09-02T14:17:34.306Z"},
     "interval":"2s",
-    "targets":[{"target":"cpu","refId":"A"}],
+    "targets":[{"target":"cpu","refId":"A"},{"target":"mem","refId":"B"}],
     "format":"json",
     "maxDataPoints":1299
   }
@@ -15,17 +15,29 @@ module Example::Grafana
 
   class Request
     Jq.mapping({
-      from: {Time, ".range.from", "%FT%T.%LZ"},
+      from:    {Time, ".range.from", "%FT%T.%LZ"},
+      targets: {Array(String), ".targets[].target"},
+      format:  String,
+      max:     {Int64, ".maxDataPoints"},
     })
   end
-  
-  it "should parse time of '/query' request by functional way" do
+
+  it "(functional way)" do
     jq = Jq.new(QUERY)
     jq[".range.from"].as_s.should eq("2016-09-02T13:32:09.981Z")
+    jq[".targets[].target"].as_a.should eq(["cpu","mem"])
+    jq[".format"].as_s.should eq("json")
+    jq[".maxDataPoints"].as_i.should eq(1299)
+    expect_raises Jq::ParseError do
+      jq[".xxx"]
+    end
   end
 
-  it "should parse time of '/query' request by class with mapping" do
+  it "(class mapping way)" do
     req = Request.from_json(QUERY)
     req.from.should eq(Time.new(2016,9,2,13,32,9,981))
+    req.targets.should eq(["cpu","mem"])
+    req.format.should eq("json")
+    req.max.should eq(1299)
   end
 end

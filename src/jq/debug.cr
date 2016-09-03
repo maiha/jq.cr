@@ -15,6 +15,7 @@ class Jq
       puts "trace: #{q.trace} of #{traces.join}"
       result = q.apply(current)
       puts "executed: #{result.inspect}"
+      puts "    type: #{result.raw.class}"
       current = result
     end
   end

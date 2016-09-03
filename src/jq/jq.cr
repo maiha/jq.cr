@@ -3,8 +3,8 @@ require "json"
 class Jq
   getter any
   getter trace
-  delegate raw, "any"
-  delegate parse, "self.class"
+  delegate raw, to: any
+  delegate parse, to: self.class
 
   def initialize(@any : JSON::Any, @trace : String = "")
   end

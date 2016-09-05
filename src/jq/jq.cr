@@ -33,7 +33,13 @@ class Jq
     end
   end
   
-  {% for name in %w( nil bool bool? i i? i64 i64? f f? f32 f32? s s? a a? h h? ) %}
+  {% for name in %w( nil bool i i64 f f32 s a h ) %}
+    def as_{{name.id}}
+      @any.not_nil!.as_{{name.id}}
+    end
+  {% end %}
+  
+  {% for name in %w( bool? i? i64? f? f32? s? a? h? ) %}
     def as_{{name.id}}
       @any.as_{{name.id}}
     end

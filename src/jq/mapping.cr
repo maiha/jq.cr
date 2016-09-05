@@ -18,13 +18,21 @@ class Jq
     end
 
     {% for key, tuple in properties %}
-      @{{key.id}} : {{tuple[0]}}
+      @{{key.id}} : {{tuple[0].id}}?
 
       def {{key.id}}=(_{{key.id}} : {{tuple[0]}})
         @{{key.id}} = _{{key.id}}
       end
 
       def {{key.id}}
+        if @{{key.id}}.nil?
+          raise Jq::NotFound.from_key({{key.id.stringify}})
+        else
+          @{{key.id}}.not_nil!
+        end
+      end
+
+      def {{key.id}}?
         @{{key.id}}
       end
     {% end %}
@@ -35,9 +43,11 @@ class Jq
       {% for key, tuple in properties %}
         begin
           hint = {{tuple[1]}}
-          v = q[{{tuple[1]}}].raw
+          v = q[{{tuple[1]}}]?.try(&.raw)
 
-          if v.is_a?({{tuple[0]}})
+          if v.nil?
+            @{{key.id}} = nil
+          elsif v.is_a?({{tuple[0]}})
             @{{key.id}} = v.as({{tuple[0]}})
           elsif {{tuple[0]}} == ::Time && v.is_a?(String)
             @{{key.id}} = jq_parse_as_time(hint, v, {{tuple[2]}})

@@ -64,9 +64,16 @@ module MappingSpec
       s.age.should eq(0)
     end
 
-    it "raises when path node is not found" do
-      expect_raises Jq::ParseError, "`.properties.foo' Missing hash key:" do
+    describe "(when path node is not found)" do
+      it "should not raise in parsing phase" do
         PathNodeNotFound.from_json(JSON_STRING)
+      end
+
+      it "raises NotFound when the field is accessed" do
+        jq = PathNodeNotFound.from_json(JSON_STRING)
+        expect_raises Jq::NotFound, "Not Found: `age'" do
+          jq.age
+        end
       end
     end
 

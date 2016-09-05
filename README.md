@@ -31,7 +31,7 @@ jq[".range.from"].as_s       # => "2016-09-02T13:32:09.981Z"
 jq[".targets[].target"].as_a # => ["cpu","mem"]
 jq[".format"].as_s           # => "json"
 jq[".maxDataPoints"].as_i    # => 1299
-jq[".xxx"]                   # Jq::ParseError("`.xxx' Missing hash key: "xxx")
+jq[".xxx"]                   # Jq::NotFound("`.xxx' Missing hash key: "xxx")
 jq[".xxx"]?                  # => nil
 ```
 
@@ -59,6 +59,8 @@ req.from     # => Time.new(2016,9,2,13,32,9,981)
 req.targets  # => ["cpu","mem"]
 req.format   # => "json"
 req.max      # => 1299
+req.xxx      # Jq::NotFound
+req.xxx?     # => nil
 ```
 
 ## Installation

@@ -40,5 +40,11 @@ module Example::Grafana
     req.targets.should eq(["cpu","mem"])
     req.format.should eq("json")
     req.max.should eq(1299)
+
+    req = Request.from_json("{}")
+    req.max?.should eq(nil)
+    expect_raises Jq::NotFound do
+      req.max
+    end
   end
 end

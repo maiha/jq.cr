@@ -32,6 +32,7 @@ jq[".targets[].target"].as_a # => ["cpu","mem"]
 jq[".format"].as_s           # => "json"
 jq[".maxDataPoints"].as_i    # => 1299
 jq[".xxx"]                   # Jq::ParseError("`.xxx' Missing hash key: "xxx")
+jq[".xxx"]?                  # => nil
 ```
 
 - See `spec/fixtures/*` files for further usage, or try `crystal spec -v` for full features

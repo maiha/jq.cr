@@ -23,6 +23,16 @@ class Jq
     raise ParseError.new("`#{trace + query.trace}' #{err}")
   end
 
+  def []?(filter : String) : Jq?
+    self[filter]
+  rescue err
+    if err.message =~ /Missing/
+      return nil
+    else
+      raise err
+    end
+  end
+  
   {% for name in %w( nil bool bool? i i? i64 i64? f f? f32 f32? s s? a a? h h? ) %}
     def as_{{name.id}}
       @any.as_{{name.id}}

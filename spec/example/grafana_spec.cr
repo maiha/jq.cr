@@ -31,6 +31,7 @@ module Example::Grafana
     expect_raises Jq::ParseError do
       jq[".xxx"]
     end
+    jq[".xxx"]?.should eq(nil)
   end
 
   it "(class mapping way)" do

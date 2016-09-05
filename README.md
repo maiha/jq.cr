@@ -1,7 +1,6 @@
-# jq.cr
+# jq.cr [![Build Status](https://travis-ci.org/maiha/jq.cr.svg?branch=master)](https://travis-ci.org/maiha/jq.cr)
 
 thin JSON::Any wrapper to emulate jq for crystal
-[![Build Status](https://travis-ci.org/maiha/jq.cr.svg?branch=master)](https://travis-ci.org/maiha/jq.cr)
 
 ## Usage
 

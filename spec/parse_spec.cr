@@ -25,7 +25,7 @@ describe Jq do
       str = %({"name": "Hi", "any": [{"x": 1}, 2, "hey", true, false, 1.5, null]})
       q = Jq.new(str)
 
-      expect_raises Jq::ParseError, "`.foo' Missing hash key: " do
+      expect_raises Jq::NotFound, "`.foo' Missing hash key: " do
         q[".foo"]
       end
     end

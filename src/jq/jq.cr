@@ -20,7 +20,11 @@ class Jq
   def [](query : Query) : Jq
     Jq.new(query.apply(any), trace + query.trace)
   rescue err
-    raise ParseError.new("`#{trace + query.trace}' #{err}")
+    if err.message =~ /Missing/
+      raise NotFound.new("`#{trace + query.trace}' #{err}")
+    else
+      raise ParseError.new("`#{trace + query.trace}' #{err}")
+    end
   end
 
   def []?(filter : String) : Jq?

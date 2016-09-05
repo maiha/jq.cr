@@ -28,7 +28,7 @@ module Example::Grafana
     jq[".targets[].target"].as_a.should eq(["cpu","mem"])
     jq[".format"].as_s.should eq("json")
     jq[".maxDataPoints"].as_i.should eq(1299)
-    expect_raises Jq::ParseError do
+    expect_raises Jq::NotFound do
       jq[".xxx"]
     end
     jq[".xxx"]?.should eq(nil)

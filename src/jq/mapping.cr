@@ -24,9 +24,13 @@ class Jq
         @{{key.id}} = _{{key.id}}
       end
 
+      protected def default_{{key.id}}
+        raise Jq::NotFound.new({{key.id.stringify}})
+      end
+
       def {{key.id}}
         if @{{key.id}}.nil?
-          raise Jq::NotFound.from_key({{key.id.stringify}})
+          default_{{key.id}}
         else
           @{{key.id}}.not_nil!
         end

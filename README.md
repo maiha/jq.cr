@@ -20,7 +20,7 @@ thin JSON::Any wrapper to emulate jq for crystal
 }
 ```
 
-#### Parse in Functional way
+### Parse in Functional way
 
 - Just call 'Jq#[]` with query path.
 
@@ -38,7 +38,7 @@ jq[".xxx"]?                  # => nil
 
 - See `spec/fixtures/*` files for further usage, or try `crystal spec -v` for full features
 
-#### Auto parsing and casting by `mapping`
+### Auto parsing and casting by `mapping`
 
 - looks like `JSON.mapping` except this requires Tuple(type, json_path, (time_format)) for its arg.
 - NOTE: use `Int64` rather than `Int32` for Integer
@@ -60,8 +60,31 @@ req.from     # => Time.new(2016,9,2,13,32,9,981)
 req.targets  # => ["cpu","mem"]
 req.format   # => "json"
 req.max      # => 1299
-req.xxx      # Jq::NotFound
-req.xxx?     # => nil
+
+req = Request.from_json("{}")
+req.max      # Jq::NotFound(key: "max")
+req.max?     # => nil
+```
+
+#### default value
+
+- override `default_XXX` to customize the behaviour of missing `XXX`
+
+```crystal
+require "jq"
+
+class User
+  Jq.mapping({
+    name: String,
+  })
+
+  def default_name
+    "(no name)"
+  end
+end
+
+user = User.from_json("{}")
+user.name    # => "(no name)"
 ```
 
 ## Installation

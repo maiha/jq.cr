@@ -2,8 +2,10 @@ require "json"
 
 class Jq
   class NotFound < Exception
-    def self.from_key(key : String)
-      new("Not Found: `#{key}'")
+    property key
+
+    def initialize(@key : String)
+      super("Not Found: `#{key}'")
     end
   end
 end

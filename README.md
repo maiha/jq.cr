@@ -2,6 +2,8 @@
 
 thin JSON::Any wrapper to emulate jq for crystal
 
+- tested on crystal-0.19.4
+
 ## Usage
 
 - For example, here is a Grafana request data.

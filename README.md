@@ -1,8 +1,8 @@
 # jq.cr [![Build Status](https://travis-ci.org/maiha/jq.cr.svg?branch=master)](https://travis-ci.org/maiha/jq.cr)
 
-thin JSON::Any wrapper to emulate jq for crystal
+thin JSON::Any wrapper to emulate jq for [Crystal](http://crystal-lang.org/).
 
-- tested on crystal-0.19.4
+- crystal: 0.20.0, 0.19.4
 
 ## Usage
 

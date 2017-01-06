@@ -75,12 +75,12 @@ class Jq
       {% end %}
     end
 
-    def to_json(io : IO)
-      io.json_object do |json|
+    def to_json(json : JSON::Builder)
+      json.object do
         {% for key, tuple in properties %}
           _{{key.id}} = @{{key.id}}
           json.field({{key.id.stringify}}) do
-            _{{key.id}}.to_json(io)
+            _{{key.id}}.to_json(json)
           end
         {% end %}
       end

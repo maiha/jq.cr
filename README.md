@@ -2,7 +2,14 @@
 
 thin JSON::Any wrapper to emulate jq for [Crystal](http://crystal-lang.org/).
 
-- crystal: 0.20.0, 0.19.4
+- crystal: 0.20.4
+
+```yaml
+dependencies:
+  jq:
+    github: maiha/jq.cr
+    version: 0.3.2
+```
 
 ## Usage
 
@@ -85,17 +92,6 @@ end
 
 user = User.from_json("{}")
 user.name    # => "(no name)"
-```
-
-## Installation
-
-Add this to your application's `shard.yml`:
-
-```yaml
-dependencies:
-  jq:
-    github: maiha/jq.cr
-    version: 0.3.1
 ```
 
 ## Development

@@ -34,7 +34,11 @@ class Jq
 
       def {{key.id}}
         if @{{key.id}}.nil?
-          default_{{key.id}}
+          {% if tuple[0].stringify =~ /^Array\(/ %}
+            {{tuple[0]}}.new
+          {% else %}
+            default_{{key.id}}
+          {% end %}
         else
           @{{key.id}}.not_nil!
         end

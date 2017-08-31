@@ -17,6 +17,10 @@ class Jq
       new(::JSON.parse(string))
     end
 
+    def self.new(pull : JSON::PullParser)
+      new(JSON::Any.new(pull))
+    end
+
     {% for key, tuple in properties %}
       @{{key.id}} : {{tuple[0].id}}?
 

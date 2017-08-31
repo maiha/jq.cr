@@ -2,7 +2,7 @@
 
 thin JSON::Any wrapper to emulate jq for [Crystal](http://crystal-lang.org/).
 
-- crystal: 0.20.4 or higher (use latest)
+- crystal: 0.20.4 or higher (use v0.4.0 or higher)
 - crystal: 0.20.3 or lower (use v0.3.1)
 
 ## Usage

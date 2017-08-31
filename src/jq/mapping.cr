@@ -69,7 +69,7 @@ class Jq
               {% elsif tuple[0].stringify == "Array(Int32)" %}
                 @{{key.id}} = jq_cast_array_int32(v)
               {% else %}
-                raise "can't cast"
+                @{{key.id}} = {{tuple[0]}}.from_json(v.to_json)
               {% end %}
             rescue err
               raise Jq::ParseError.new("mapping: `#{hint}' expected #{{{tuple[0]}}}, but got #{v.class} (#{err})")

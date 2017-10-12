@@ -43,7 +43,7 @@ jq[".xxx"]?                  # => nil
 
 ### Auto parsing and casting by `mapping`
 
-- looks like `JSON.mapping` except this requires Tuple(type, json_path, (time_format)) for its arg.
+- looks like `JSON.mapping` except this requires Tuple(type, json_path) for its arg.
 - NOTE: use `Int64` rather than `Int32` for Integer
 
 ```crystal
@@ -51,7 +51,7 @@ require "jq"
 
 class Request
   Jq.mapping({
-    from:    {Time, ".range.from", "%FT%T.%LZ"},
+    from:    {Time, ".range.from"},
     targets: {Array(String), ".targets[].target"},
     format:  String,
     max:     {Int64, ".maxDataPoints"},

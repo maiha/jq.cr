@@ -78,11 +78,11 @@ module MappingSpec
     end
 
     it "raises when attr's class is not match" do
-      expect_raises Jq::ParseError, "`.title' expected Int64, but got String" do
+      expect_raises Jq::CastError do
         ClassMismatch.from_json(JSON_STRING)
       end
 
-      expect_raises Jq::ParseError, "`.properties.age' expected Int64, but got Hash" do
+      expect_raises Jq::CastError do
         NotLeaf.from_json(JSON_STRING)
       end
     end

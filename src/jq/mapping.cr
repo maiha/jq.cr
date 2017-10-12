@@ -24,8 +24,8 @@ class Jq
     {% for key, tuple in properties %}
       @{{key.id}} : {{tuple[0].id}}?
 
-      def {{key.id}}=(_{{key.id}} : {{tuple[0]}})
-        @{{key.id}} = _{{key.id}}
+      def {{key.id}}=(value : {{tuple[0]}})
+        @{{key.id}} = value
       end
 
       protected def default_{{key.id}}
@@ -55,30 +55,7 @@ class Jq
       {% for key, tuple in properties %}
         begin
           hint = {{tuple[1]}}
-          v = q[{{tuple[1]}}]?.try(&.raw)
-
-          if v.nil?
-            @{{key.id}} = nil
-          elsif v.is_a?({{tuple[0]}})
-            @{{key.id}} = v.as({{tuple[0]}})
-          elsif {{tuple[0]}} == ::Time && v.is_a?(String)
-            @{{key.id}} = jq_parse_as_time(hint, v, {{tuple[2]}})
-          else
-            # rescue the case of Array(T)
-            begin
-              {% if tuple[0].stringify == "Array(String)" %}
-                @{{key.id}} = jq_cast_array_string(v)
-              {% elsif tuple[0].stringify == "Array(Int64)" %}
-                @{{key.id}} = jq_cast_array_int64(v)
-              {% elsif tuple[0].stringify == "Array(Int32)" %}
-                @{{key.id}} = jq_cast_array_int32(v)
-              {% else %}
-                @{{key.id}} = {{tuple[0]}}.from_json(v.to_json)
-              {% end %}
-            rescue err
-              raise Jq::ParseError.new("mapping: `#{hint}' expected #{{{tuple[0]}}}, but got #{v.class} (#{err})")
-            end
-          end
+          @{{key.id}} = q[{{tuple[1]}}]?.try(&.cast({{tuple[0]}}, hint))
         end
       {% end %}
     end
@@ -120,12 +97,6 @@ class Jq
       else
         raise "no cast support for #{x.class}"
       end
-    end
-
-    protected def jq_parse_as_time(hint, v, fmt : String? = "%F")
-      Time.parse(v, fmt.not_nil!)
-    rescue err
-      raise Jq::ParseError.new("`#{hint}' #{err} (input: #{v})")
     end
   end
 end

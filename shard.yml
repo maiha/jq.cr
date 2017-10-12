@@ -1,6 +1,11 @@
 name: jq
 version: 0.4.2
 
+dependencies:
+  pretty:
+    github: maiha/pretty.cr
+    version: ">= 0.3.1"
+
 authors:
   - maiha <maiha@wota.jp>
 

@@ -4,13 +4,11 @@ class Jq
     # (before)
     #   key1:  String,
     #   key2: {String, ".key2"},
-    #   key3: {Time, ".key3", "%FT%T"},
     # (after)
     #   key1: {String, ".key1"},
     #   key2: {String, ".key2"},
-    #   key3: {Time, ".key3", "%FT%T"},
     {% for key, tuple in properties %}
-      {% properties[key] = {tuple, ".#{key.id}"} if tuple.is_a?(Path) %}
+      {% properties[key] = {tuple, ".#{key.id}"} if tuple.is_a?(Path) || tuple.is_a?(Generic)%}
     {% end %}
 
     def self.from_json(string : String)

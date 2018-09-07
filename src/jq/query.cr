@@ -26,34 +26,51 @@ class Jq
       def initialize(@trace : String, @key : (Int32 | String))
       end
 
-      def apply(x : Array(JSON::Type), i : Int32) : JSON::Type
+      def apply(x : Array(JSON::Any), i : Int32) : JSON::Any
         x[i]
       end
       
-      def apply(x : Array(JSON::Type), key : String) : JSON::Type
+      def apply(x : Array(JSON::Any), key : String) : Array(JSON::Any)
         v = x.map{|e|
-          case e
+          case e.raw
           when Hash
-            e[key].as(JSON::Type)
+            e[key].as(JSON::Any)
           when Array
-            e[key.to_i].as(JSON::Type)
+            e[key.to_i].as(JSON::Any)
           else
             raise "invalid [#{key}] access to #{e.class}"
           end
-        }.map(&.as(JSON::Type)).as(Array(JSON::Type))
+        }.map(&.as(JSON::Any)).as(Array(JSON::Any))
       end
 
-      def apply(x : Array(JSON::Type), key) : JSON::Type
+      def apply(x : Array(JSON::Any), key) : JSON::Any
         raise "invalid [#{key}(#{key.class})] access to Array"
       end
       
-      def apply(x : JSON::Any)
+      def apply(x : JSON::Any) : JSON::Any
         if x.raw.is_a?(Array)
-          v = apply(x.raw.as(Array(JSON::Type)), @key)
-          return JSON::Any.new(v.as(JSON::Type))
+          # x: [{"s" => "foo"}, {"s" => "bar"}]
+          # @key: "s"
+          v = apply(x.as_a, @key)
+          case v
+          when JSON::Any
+            return v
+          when Array(JSON::Any)
+            return JSON::Any.new(v)
+          else
+            raise "Expected 'Array(JSON::Any)' or 'JSON::Any', but got #{v.class})"
+          end
         else
           return x[@key].as(JSON::Any)
         end
+      end
+
+      def to_s(io : IO)
+        io << "[#{@key.inspect}]"
+      end
+
+      def inspect(io : IO)
+        io << "Jq::Query::Attr(#{to_s}, @trace='#{trace}')"
       end
     end
 
@@ -62,11 +79,11 @@ class Jq
 
       getter trace
 
-      def initialize(@trace : String, @val : JSON::Type)
+      def initialize(@trace : String, @val : JSON::Any)
       end
 
       def apply(x : JSON::Any)
-        JSON::Any.new(@val)
+        @val
       end
     end
 
@@ -83,9 +100,17 @@ class Jq
         when Array
           x.as(JSON::Any)
         else
-          v = ([x.raw].flatten.compact.map(&.as(JSON::Type)))
-          JSON::Any.new(v.as(JSON::Type))
+          # If not array, returns empty array.
+          JSON::Any.new(Array(JSON::Any).new)
         end
+      end
+
+      def to_s(io : IO)
+        io << "[]"
+      end
+
+      def inspect(io : IO)
+        io << "Jq::Query::ToArray(#{to_s})"
       end
     end
   end

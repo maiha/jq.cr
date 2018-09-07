@@ -11,7 +11,7 @@ record Suit, program_line : Line, input_line : Line, output_line : Line do
     input_line.buffer
   end
 
-  def expected : JSON::Type
+  def expected : JSON::Any::Type
     JSON.parse(output_line.buffer).raw
   end
 end

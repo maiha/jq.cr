@@ -12,10 +12,9 @@ describe Jq do
   end
 
   describe "raw" do
-    it "returns JSON::Type" do
+    it "returns JSON::Any::Type" do
       q = Jq.new(%({"foo": "bar"}))
-      q.raw.should be_a(JSON::Type)
-      q.raw.should be_a(Hash(String, JSON::Type))
+      q.raw.should be_a(JSON::Any::Type)
     end
   end
 end

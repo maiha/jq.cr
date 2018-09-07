@@ -36,7 +36,7 @@ module Example::Grafana
 
   it "(class mapping way)" do
     req = Request.from_json(QUERY)
-    req.from.should eq(Time.new(2016,9,2,13,32,9,981, kind: Time::Kind::Utc))
+    req.from.should eq(Time.utc(2016,9,2,13,32,9, nanosecond: 981_000_000))
     req.targets.should eq(["cpu","mem"])
     req.format.should eq("json")
     req.max.should eq(1299)

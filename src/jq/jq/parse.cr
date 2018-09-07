@@ -27,7 +27,7 @@ class Jq
       when /(.*)/
         s = $1
         begin
-          array << Query::Const.new(s, JSON.parse(s).raw)
+          array << Query::Const.new(s, JSON.parse(s))
           break
         rescue
           trace = array.map(&.trace).join

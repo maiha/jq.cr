@@ -2,9 +2,14 @@
 
 thin JSON::Any wrapper to emulate jq for [Crystal](http://crystal-lang.org/).
 
+see [Wiki](https://github.com/maiha/jq.cr/wiki) for examples
+
+#### breaking changes
 - v0.5.0 : **(breaking-change)** mapping: parse `Time` without formats.
 
-see [Wiki](https://github.com/maiha/jq.cr/wiki) for examples
+#### crystal versions
+- v0.5.1 for crystal-0.24.x or lower
+- v0.6.0 for crystal-0.25.x, 0.26.x
 
 ## Usage
 
@@ -97,7 +102,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   jq:
     github: maiha/jq.cr
-    version: 0.5.1
+    version: 0.6.0
 ```
 
 ## Development

@@ -94,6 +94,48 @@ user = User.from_json("{}")
 user.name    # => "(no name)"
 ```
 
+#### custom builder
+
+- override `build_XXX(jq : Jq, hint : String)` to customize the behaviour of building `XXX`
+
+Imagine a strange API that returns a `String` if null, regardless of the value of `Int` type.
+
+```json
+[
+  {"id": 1, "value": 10},
+  {"id": 2, "value": "--"}
+]
+```
+
+In this case, you can write your own logic to accept it by overriding `build_count`.
+
+
+```crystal
+class Report
+  Jq.mapping({
+    id: Int32,
+    count: Int32?,
+  })
+
+  def build_count(jq : Jq, hint : String)
+    case jq.raw
+    when "--"
+      nil
+    else
+      jq.cast(Int32, hint)
+    end
+  end
+end
+
+reports = Array(Report).from_json <<-EOF
+  [
+    {"id": 1, "count": 10},
+    {"id": 2, "count": "--"}
+  ]
+  EOF
+reports.map(&.count?) # => [10, nil]
+```
+
 ## Installation
 
 Add this to your application's `shard.yml`:

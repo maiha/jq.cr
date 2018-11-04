@@ -30,6 +30,10 @@ class Jq
         raise Jq::NotFound.new({{key.id.stringify}})
       end
 
+      protected def build_{{key.id}}(jq : Jq, hint : String)
+        jq.cast({{tuple[0].id}}, hint)
+      end
+
       def {{key.id}}
         if @{{key.id}}.nil?
           {% if tuple[0].stringify =~ /^Array\(/ %}
@@ -48,12 +52,11 @@ class Jq
     {% end %}
 
     def initialize(%any : ::JSON::Any)
-      q = Jq.new(%any)
+      jq = Jq.new(%any)
 
       {% for key, tuple in properties %}
         begin
-          hint = {{tuple[1]}}
-          @{{key.id}} = q[{{tuple[1]}}]?.try(&.cast({{tuple[0]}}, hint))
+          @{{key.id}} = jq[{{tuple[1]}}]?.try{|q| build_{{key.id}}(q, {{tuple[1]}})}
         end
       {% end %}
     end

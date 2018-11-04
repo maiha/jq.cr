@@ -6,7 +6,7 @@ module Jq::Cast
       {% if hint.is_a?(Nil) %}
         raise Jq::CastError.new(err)
       {% else %}
-        raise Jq::CastError.new("`%s' exepected %s, but %s" % [{{hint}}, {{klass}}, err])
+        raise Jq::CastError.new("`%s' expected %s, but %s" % [{{hint}}, {{klass}}, err])
       {% end %}
     end
   end

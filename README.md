@@ -9,7 +9,7 @@ see [Wiki](https://github.com/maiha/jq.cr/wiki) for examples
 
 #### crystal versions
 - v0.5.1 for crystal-0.24.x or lower
-- v0.6.0 for crystal-0.25.x, 0.26.x
+- v0.6.0 for crystal-0.25.x, 0.26.x, 0.27.x
 
 ## Usage
 
@@ -144,7 +144,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   jq:
     github: maiha/jq.cr
-    version: 0.6.0
+    version: 0.7.0
 ```
 
 ## Development

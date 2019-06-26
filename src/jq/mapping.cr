@@ -72,6 +72,14 @@ class Jq
       end
     end
 
+    def to_h
+      {
+        {% for key, tuple in properties %}
+          {{key.stringify}} => {{key}}?,
+        {% end %}
+      }
+    end
+
     protected def jq_cast_array_string(x) : Array(String)
       case x
       when Array

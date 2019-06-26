@@ -63,14 +63,15 @@ class Request
 end
 
 req = Request.from_json(str)
-req.from     # => Time.new(2016,9,2,13,32,9,981)
-req.targets  # => ["cpu","mem"]
-req.format   # => "json"
-req.max      # => 1299
+req.from        # => Time.new(2016,9,2,13,32,9,981)
+req.targets     # => ["cpu","mem"]
+req.format      # => "json"
+req.max         # => 1299
+req.to_h["max"] # => 1299
 
 req = Request.from_json("{}")
-req.max      # Jq::NotFound(key: "max")
-req.max?     # => nil
+req.max         # Jq::NotFound(key: "max")
+req.max?        # => nil
 ```
 
 #### default value

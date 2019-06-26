@@ -4,7 +4,7 @@ version: 0.7.0
 dependencies:
   pretty:
     github: maiha/pretty.cr
-    version: ">= 0.6.0"
+    version: ">= 0.7.3"
 
 authors:
   - maiha <maiha@wota.jp>

@@ -8,9 +8,9 @@ see [Wiki](https://github.com/maiha/jq.cr/wiki) for examples
 - v0.5.0 : **(breaking-change)** mapping: parse `Time` without formats.
 
 #### crystal versions
-- v0.5.1 for crystal-0.24.x or lower
-- v0.6.0 for crystal-0.25.x, 0.26.x, 0.27.x
-- v0.8.0 for crystal-0.28.x
+- v0.5.1 : 0.24 or lower
+- v0.6.0 : 0.25 .. 0.27
+- v0.8.0 : 0.27 .. 0.35
 
 ## Usage
 

@@ -147,7 +147,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   jq:
     github: maiha/jq.cr
-    version: 0.8.0
+    version: 0.9.0
 ```
 
 ## Development

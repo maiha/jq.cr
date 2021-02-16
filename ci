@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -eu
+
+function test() {
+  local version=$1
+  echo "----------------------------------------------------------------------"
+  echo "[$version]"
+  echo "----------------------------------------------------------------------"
+  
+  crenv local $version
+  crystal spec
+}
+
+test 0.27.2
+test 0.33.0
+test 0.35.1
+test 0.36.1
+

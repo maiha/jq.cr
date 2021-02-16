@@ -8,12 +8,12 @@ class Jq
     class Lambda
       include Query
 
-      getter trace
+      getter trace : String
 
       def initialize(@trace : String, @func : (JSON::Any -> JSON::Any))
       end
 
-      def apply(any : JSON::Any)
+      def apply(any : JSON::Any) : JSON::Any
         @func.call(any)
       end
     end
@@ -21,7 +21,7 @@ class Jq
     class Attr
       include Query
 
-      getter trace
+      getter trace : String
 
       def initialize(@trace : String, @key : (Int32 | String))
       end
@@ -77,12 +77,12 @@ class Jq
     class Const
       include Query
 
-      getter trace
+      getter trace : String
 
       def initialize(@trace : String, @val : JSON::Any)
       end
 
-      def apply(x : JSON::Any)
+      def apply(any : JSON::Any) : JSON::Any
         @val
       end
     end
@@ -90,15 +90,15 @@ class Jq
     class ToArray
       include Query
 
-      getter trace
+      getter trace : String
 
       def initialize(@trace : String)
       end
 
-      def apply(x : JSON::Any)
-        case x.raw
+      def apply(any : JSON::Any) : JSON::Any
+        case any.raw
         when Array
-          x.as(JSON::Any)
+          any.as(JSON::Any)
         else
           # If not array, returns empty array.
           JSON::Any.new(Array(JSON::Any).new)

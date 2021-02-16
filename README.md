@@ -11,6 +11,7 @@ see [Wiki](https://github.com/maiha/jq.cr/wiki) for examples
 - v0.5.1 : 0.24 or lower
 - v0.6.0 : 0.25 .. 0.27
 - v0.8.0 : 0.27 .. 0.35
+- v0.9.0 : 0.36
 
 ## Usage
 

@@ -1,4 +1,4 @@
-# jq.cr [![Build Status](https://travis-ci.org/maiha/jq.cr.svg?branch=master)](https://travis-ci.org/maiha/jq.cr)
+# jq.cr
 
 thin JSON::Any wrapper to emulate jq for [Crystal](http://crystal-lang.org/).
 
@@ -10,8 +10,7 @@ see [Wiki](https://github.com/maiha/jq.cr/wiki) for examples
 #### crystal versions
 - v0.5.1 : 0.24 or lower
 - v0.6.0 : 0.25 .. 0.27
-- v0.8.0 : 0.27 .. 0.35
-- v0.9.0 : 0.36
+- v1.0.0 : 0.27 .. 1.1.1
 
 ## Usage
 
@@ -150,12 +149,13 @@ dependencies:
     version: 0.9.0
 ```
 
-## Development
+## CI
 
-```shell
-cd jq.cr
-crystal deps   # install dependencies
-crystal spec   # run specs
+Run `make test/x.x.x` to test crystal-x.x.x. And to test all the versions, run `ci`.
+
+```console
+$ make test/1.1.1
+$ ./ci
 ```
 
 ## Contributing

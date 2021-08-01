@@ -146,7 +146,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   jq:
     github: maiha/jq.cr
-    version: 0.9.0
+    version: 1.0.0
 ```
 
 ## CI

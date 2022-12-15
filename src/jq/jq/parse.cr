@@ -10,7 +10,7 @@ class Jq
       when /\A\.(\w+)(.*)\Z/ # ".foo"
         array << Query::Attr.new(".#{$1}", $1)
         s = $2
-      when /\A\."(\w+)"(.*)\Z/ # ".foo"
+      when /\A\."([^"]+?)"(.*)\Z/ # ".foo"
         array << Query::Attr.new(".#{$1}", $1)
         s = $2
       when /\A\[\](.*)\Z/ # "[]"
